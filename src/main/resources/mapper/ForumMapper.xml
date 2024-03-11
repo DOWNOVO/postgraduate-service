@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjz.mapper.ForumMapper">
+
+    <insert id="save">
+        INSERT INTO information
+            (info_id,info_type,info_title,info_path,added_time)
+        VALUES
+            (#{infoId},#{infoType},#{infoTitle},#{infoPath},#{addedTime});
+    </insert>
+
+    <select id="getForumArticleByType" resultType="com.zjz.entity.po.ForumPost">
+        SELECT
+            *
+        FROM
+            forum_post
+        where board_name = #{type}
+        order by post_time desc
+    </select>
+
+    <select id="getAllForumArticle" resultType="com.zjz.entity.po.ForumPost">
+        SELECT
+            *
+        FROM
+            forum_post
+        order by post_time desc
+    </select>
+
+    <insert id="saveForumPost">
+        INSERT INTO forum_post
+            (post_id,board_name,user_id,username,title,content,post_time,good_count,comment_count,status)
+        VALUES
+            (#{postId},#{boardName},#{userId},#{username},#{title},#{content},#{postTime},#{goodCount},#{commentCount},#{status});
+    </insert>
+
+    <select id="getPostContentById" resultType="com.zjz.entity.po.ForumPost">
+        SELECT
+            *
+        FROM
+            forum_post
+        where post_id = #{postId}
+    </select>
+
+    <insert id="saveLike">
+        INSERT INTO like_record
+        (like_type,object_id,user_id,create_time,author_user_id)
+        VALUES
+            (#{likeType},#{objectId},#{userId},#{createTime},#{authorUserId});
+    </insert>
+
+    <select id="getLikeRecord" resultType="com.zjz.entity.po.LikeRecord">
+        SELECT
+            *
+        FROM
+            like_record
+        where user_id = #{userId} and object_id=#{objectId}
+    </select>
+
+    <delete id="deleteLikeRecord">
+        DELETE FROM like_record WHERE user_id = #{userId} and object_id=#{objectId} LIMIT 1;
+    </delete>
+
+    <update id="deletePostGoodCountById">
+        UPDATE
+            forum_post
+        SET
+            good_count = good_count - 1
+        WHERE
+            post_id = #{objectId}
+            LIMIT 1;
+    </update>
+
+    <update id="addPostGoodCountById">
+        UPDATE
+            forum_post
+        SET
+            good_count = good_count + 1
+        WHERE
+            post_id = #{objectId}
+            LIMIT 1;
+    </update>
+
+    <update id="deleteCommentGoodCountById">
+        UPDATE
+            forum_comment
+        SET
+            good_count = good_count - 1
+        WHERE
+            comment_id = #{objectId}
+            LIMIT 1;
+    </update>
+
+    <update id="addCommentGoodCountById">
+        UPDATE
+            forum_comment
+        SET
+            good_count = good_count + 1
+        WHERE
+            comment_id = #{objectId}
+            LIMIT 1;
+    </update>
+
+    <select id="getGoodCountById" resultType="java.lang.Integer">
+        SELECT
+            good_count
+        FROM
+            forum_comment
+        where  comment_id=#{id}
+    </select>
+
+    <select id="getUserLikeByUserId" resultType="java.lang.String">
+        SELECT
+            object_id
+        FROM
+            like_record
+        where  user_id=#{id} and like_type="0"
+    </select>
+
+    <select id="getUserForumPostByUsername" resultType="com.zjz.entity.po.ForumPost">
+        SELECT
+            *
+        FROM
+            forum_post
+        where username = #{username}
+        order by post_time desc
+    </select>
+
+    <select id="getUserCommentByUsername" resultType="java.lang.String">
+        SELECT
+            post_id
+        FROM
+            forum_comment
+        where username = #{username}
+    </select>
+
+    <select id="getForumPostByList" parameterType="java.util.List" resultType="com.zjz.entity.po.ForumPost">
+        SELECT
+            *
+        FROM
+            forum_post
+        where post_id in
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

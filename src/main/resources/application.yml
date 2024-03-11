@@ -1,0 +1,38 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /hbb
+spring:
+  thymeleaf:
+    # 开发状态下设置为false，生成环境设置为true
+    cache: false
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/bysj?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: cyh2436986426
+    type: com.alibaba.druid.pool.DruidDataSource
+  servlet:
+    multipart:
+      max-file-size:
+        10MB
+      max-request-size:
+        10MB
+# mybatis配置
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.zjz.entity
+  configuration:
+    # 将数据库的下划线风格与OOP中的驼峰式风格进行映射
+    map-underscore-to-camel-case: true
+    #懒加载配置
+    aggressive-lazy-loading: true
+    lazy-loading-enabled: true
+    use-generated-keys: true
+
+page helper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+

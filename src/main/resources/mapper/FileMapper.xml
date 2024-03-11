@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjz.mapper.FileMapper">
+
+    <insert id="save">
+        INSERT INTO information
+        (info_id,info_type,info_title,info_path,added_time)
+        VALUES
+            (#{infoId},#{infoType},#{infoTitle},#{infoPath},#{addedTime});
+    </insert>
+
+    <select id="getAllInformation" resultType="com.zjz.entity.po.Information">
+        SELECT
+            *
+        FROM
+            information
+    </select>
+
+    <select id="getInformationByType" resultType="com.zjz.entity.po.Information">
+        SELECT
+            *
+        FROM
+            information
+        where info_type = #{type}
+        order by added_time desc
+    </select>
+
+    <select id="getInfoPathById" resultType="java.lang.String">
+        SELECT
+            info_path
+        FROM
+            information
+        where info_id = #{infoId}
+    </select>
+</mapper>

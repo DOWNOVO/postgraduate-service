@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjz.mapper.CommentMapper">
+
+    <insert id="saveComment" parameterType="com.zjz.entity.po.Comment">
+
+        INSERT INTO `forum_comment`(`p_comment_id`,`user_id`,`post_id`,`username`,`content`,`post_time`,`comment_id`,`replied_name`)
+        VALUES(#{pCommentId},#{userId},#{postId},#{username},#{content},#{postTime},#{commentId},#{repliedName})
+    </insert>
+    <!--根据父ID与文章ID查找子评论-->
+    <select id="selectByParentId" parameterType="java.lang.String" resultType="com.zjz.entity.vo.CommentVO">
+        select *
+        FROM forum_comment
+        where p_comment_id = #{commentId}
+          and `post_id` = #{postId}
+        order by post_time desc
+    </select>
+<!--    根据文章ID查找一级评论-->
+    <select id="selectPCommentByArticleId" parameterType="java.lang.String" resultType="com.zjz.entity.vo.CommentVO">
+        select
+            *
+        FROM
+            forum_comment
+        where `post_id` = #{postId} and p_comment_id is null
+        order by post_time desc
+    </select>
+
+    <update id="updateCommentCount">
+        UPDATE
+            forum_post
+        SET
+            `comment_count` = `comment_count` + 1
+        WHERE post_id =#{postId}
+
+    </update>
+</mapper>

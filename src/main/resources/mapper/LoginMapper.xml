@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjz.mapper.LoginMapper">
+
+    <insert id="saveUser">
+        INSERT INTO user
+        (username,password,role)
+        VALUES
+            (#{username},#{password},#{role});
+    </insert>
+
+    <select id="getByUsername" resultType="com.zjz.entity.po.User">
+        select
+            *
+        from user
+        where username = #{username}
+    </select>
+
+    <update id="update">
+        UPDATE
+            user
+        SET
+            `password` = #{newOnePassword}
+        WHERE username =#{username}
+
+    </update>
+
+    <update id="updateUserInfo">
+        UPDATE
+            user
+        SET
+            `selected_institution` = #{selectedInstitution},
+            `personal_profile` = #{personalProfile},
+            `head_sculpture` = #{headSculpture}
+        WHERE user_id =#{userId}
+    </update>
+
+</mapper>

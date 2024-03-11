@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjz.mapper.SchoolInfoMapper">
+    <!--通过学校名字查询学校简介-->
+    <select id="getIntroductionByName" resultType="java.lang.String">
+        SELECT
+            introduction
+        FROM
+            school
+        WHERE
+            name =#{schoolName}
+            LIMIT 1;
+    </select>
+
+    <!--通过学校名字查询学校学费奖励信息-->
+    <select id="getSchoolTuitionBySchoolName" resultType="java.lang.String">
+        SELECT
+            tuition
+        FROM
+            school
+        WHERE
+            name =#{schoolName}
+    </select>
+
+
+    <select id="getGeneralRegulationsBySchoolName" resultType="com.zjz.entity.po.GeneralRegulations">
+        SELECT
+            *
+        FROM
+            generalregulations
+        WHERE
+            school_name =#{schoolName}
+        order by added_time DESC
+    </select>
+
+    <select id="getAdmissionBySchoolName" resultType="com.zjz.entity.po.Admission">
+        SELECT
+            *
+        FROM
+            admission
+        WHERE
+            school_name =#{schoolName}
+        order by added_time DESC
+    </select>
+
+    <select id="generalRegulationsContent" resultType="java.lang.String">
+        SELECT
+            content
+        FROM
+            generalregulations
+        WHERE
+            title =#{title}
+
+    </select>
+
+    <select id="getAdmissionContentByTitle" resultType="java.lang.String">
+        SELECT
+            content
+        FROM
+            admission
+        WHERE
+            title =#{title}
+    </select>
+
+    <select id="getAllSchoolIntroduction" resultType="com.zjz.entity.po.School">
+        SELECT
+            *
+        FROM
+            school
+
+    </select>
+
+    <select id="getArticleBySchoolName" resultType="com.zjz.entity.po.Article">
+        SELECT
+            *
+        FROM
+            article
+        where school_name = #{schoolName}
+        order by added_time desc
+    </select>
+
+    <select id="getSchoolAllArticleType" resultType="java.lang.String">
+        SELECT
+            article_type
+        FROM
+            article
+        where school_name = #{schoolName}
+    </select>
+
+    <select id="getSchoolAllArticleByType" resultType="com.zjz.entity.po.Article">
+        SELECT
+            *
+        FROM
+            article
+        where article_type = #{articleType} and school_name = #{schoolName}
+    </select>
+
+    <select id="getAllArticle" resultType="com.zjz.entity.po.Article">
+        SELECT
+            *
+        FROM
+            article
+    </select>
+
+    <select id="getArticleConcreteContentById" resultType="com.zjz.entity.po.Article">
+        SELECT
+            *
+        FROM
+            article
+        where article_id = #{articleId}
+    </select>
+</mapper>
